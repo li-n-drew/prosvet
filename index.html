@@ -1,0 +1,966 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сообщество | Пространство для роста</title>
+    
+    <!-- Яндекс Карты подключаются скриптом внизу страницы -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* CSS Переменные: ТЕМНАЯ ТЕМА (ПО УМОЛЧАНИЮ) */
+        :root {
+            --bg-color: #111111;
+            --text-color: #ffffff;
+            --light-gray: #1a1a1a;
+            --border-color: #333333;
+            --btn-bg: #ffffff;
+            --btn-text: #111111;
+            --header-bg: rgba(17, 17, 17, 0.85);
+            --text-muted: #999999;
+            /* Темный оверлей для панорамного баннера */
+            --hero-overlay: rgba(17, 17, 17, 0.85);
+            /* Акцентный (желтый) цвет */
+            --accent-color: #ffe066;
+        }
+
+        /* СВЕТЛАЯ ТЕМА */
+        [data-theme="light"] {
+            --bg-color: #ffffff;
+            --text-color: #111111;
+            --light-gray: #f7f7f7;
+            --border-color: #eaeaea;
+            --btn-bg: #111111;
+            --btn-text: #ffffff;
+            --header-bg: rgba(255, 255, 255, 0.95);
+            --text-muted: #666666;
+            /* Светлый оверлей для панорамного баннера */
+            --hero-overlay: rgba(255, 255, 255, 0.7);
+            --accent-color: #ffe066;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Глобальные настройки секций */
+        section {
+            padding: 4.5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1, h2, h3, h4 {
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        h2 {
+            font-size: 3rem;
+            margin-bottom: 4rem;
+            letter-spacing: -1px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 4rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+            transition: border-color 0.4s ease;
+        }
+
+        .section-header p {
+            color: var(--text-muted);
+            transition: color 0.4s ease;
+        }
+
+        /* Навигация */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: var(--header-bg);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            transition: all 0.4s ease;
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        .logo .accent {
+            color: var(--accent-color);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-color);
+        }
+
+        /* Плавающая кнопка переключения темы */
+        .theme-toggle-fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--btn-bg);
+            color: var(--btn-text);
+            border: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            cursor: pointer;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease, background-color 0.4s ease, color 0.4s ease;
+        }
+
+        .theme-toggle-fab svg {
+            width: 24px;
+            height: 24px;
+            stroke: currentColor;
+            stroke-width: 2;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .theme-toggle-fab:hover {
+            transform: scale(1.1);
+        }
+
+        /* HERO СЕКЦИЯ (Исправлена ширина) */
+        .hero {
+            width: 100%;
+            max-width: 100%; /* Сбрасываем глобальное ограничение в 1200px */
+            margin: 0; /* Убираем центрирование через margin */
+            padding: 14rem 2rem 10rem; 
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(var(--hero-overlay), var(--hero-overlay)), 
+                        url('hero.jpg') center/cover no-repeat;
+            color: var(--text-color);
+            transition: background 0.4s ease, color 0.4s ease;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            align-items: center;
+            gap: 4rem;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            margin: 0;
+            width: 100%;
+            text-align: left;
+        }
+
+        .hero-quote {
+            border-left: 4px solid var(--accent-color);
+            padding: 1.5rem 2rem;
+            max-width: 480px;
+            justify-self: end;
+            text-align: left;
+        }
+
+        .hero-quote blockquote {
+            font-family: 'Caveat', 'Segoe Script', cursive;
+            font-size: 2.2rem;
+            font-style: normal;
+            line-height: 1.4;
+            margin-bottom: 1rem;
+            color: var(--text-color);
+        }
+
+        .hero-quote a {
+            color: var(--accent-color);
+            font-weight: 600;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: opacity 0.3s ease;
+        }
+
+        .hero-quote a:hover {
+            opacity: 0.8;
+        }
+
+        .hero h1 {
+            font-size: 4.5rem;
+            letter-spacing: -2px;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+            transition: color 0.4s ease;
+            max-width: 700px;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.2rem 3rem;
+            background-color: var(--btn-bg);
+            color: var(--btn-text);
+            font-weight: 500;
+            font-size: 1rem;
+            border-radius: 50px;
+            transition: transform 0.3s ease, background-color 0.4s ease, color 0.4s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+
+        /* Преимущества */
+        .features {
+            background-color: var(--light-gray);
+            max-width: 100%;
+            transition: background-color 0.4s ease;
+        }
+        
+        .features-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3rem;
+        }
+
+        .feature-item h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 1rem;
+        }
+
+        .feature-item p {
+            color: var(--text-muted);
+            transition: color 0.4s ease;
+            text-align: left;
+        }
+
+        /* О нас */
+        .about-intro {
+            font-size: 1.4rem;
+            color: var(--text-muted);
+            max-width: 720px;
+            margin: -2.5rem 0 4rem;
+            transition: color 0.4s ease;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+
+        .about-text h3 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .about-text p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            transition: color 0.4s ease;
+        }
+
+        /* Галерея */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            grid-auto-rows: 300px;
+            gap: 1.5rem;
+        }
+
+        .gallery-item {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 12px;
+            background-color: var(--light-gray);
+            transition: filter 0.3s ease, background-color 0.4s ease;
+        }
+        
+        .gallery-item:hover {
+            filter: brightness(1.2);
+        }
+
+        .item-wide { grid-column: span 8; }
+        .item-small { grid-column: span 4; }
+
+        /* События */
+        .events-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .event-card {
+            display: grid;
+            grid-template-columns: 200px 1fr auto;
+            align-items: center;
+            padding: 2.5rem 0;
+            border-bottom: 1px solid var(--border-color);
+            transition: padding-left 0.3s ease, border-color 0.4s ease;
+        }
+
+        .event-card:hover {
+            padding-left: 1rem;
+        }
+
+        .event-date {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            transition: color 0.4s ease;
+        }
+
+        .event-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .event-info p {
+            color: var(--text-muted);
+            transition: color 0.4s ease;
+        }
+
+        .event-btn {
+            padding: 0.8rem 2rem;
+            border: 1px solid var(--text-color);
+            border-radius: 30px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .event-btn:hover {
+            background: var(--text-color);
+            color: var(--bg-color);
+        }
+
+        /* Локации */
+        .locations-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 2rem;
+            height: 600px;
+        }
+
+        .map-container {
+            height: 100%;
+            overflow: hidden;
+            border-radius: 16px;
+        }
+
+        #map {
+            height: 100%;
+            width: 100%;
+            border-radius: 16px;
+            background-color: var(--light-gray);
+            z-index: 1;
+            transition: background-color 0.4s ease;
+        }
+
+        .locations-list {
+            height: 100%;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            padding-right: 10px;
+        }
+
+        .locations-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        .locations-list::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .locations-list::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 10px;
+        }
+
+        .location-item {
+            padding: 1.5rem;
+            background: var(--light-gray);
+            border: 1px solid transparent;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .location-item:hover {
+            border-color: var(--border-color);
+        }
+
+        .location-item.active {
+            border-color: var(--text-color);
+            background: transparent;
+        }
+
+        .location-item h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .location-item p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            transition: color 0.4s ease;
+        }
+
+        .location-address {
+            font-size: 0.85rem;
+            color: var(--text-color);
+            display: inline-block;
+            background: var(--border-color);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        /* Соцсети */
+        .social-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .social-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem 2rem;
+            background-color: var(--light-gray);
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .social-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .social-card p {
+            color: var(--text-muted);
+            transition: color 0.4s ease;
+        }
+
+        .social-card:hover {
+            background-color: var(--btn-bg);
+            color: var(--btn-text);
+            transform: translateY(-5px);
+        }
+        .social-card:hover p {
+            color: var(--btn-text);
+            opacity: 0.8;
+        }
+
+        /* CTA Секция */
+        .cta-section {
+            background-color: var(--btn-bg);
+            color: var(--btn-text);
+            max-width: 100%;
+            text-align: center;
+            padding: 8rem 2rem;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        .cta-inner {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .cta-inner h2 {
+            border: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .cta-inner p {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            margin-bottom: 3rem;
+        }
+
+        .cta-btn {
+            background: var(--btn-text);
+            color: var(--btn-bg);
+            padding: 1.2rem 3rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            display: inline-block;
+            transition: transform 0.3s ease, background-color 0.4s ease, color 0.4s ease;
+        }
+        
+        .cta-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Подвал */
+        .site-footer {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem 2rem;
+            border-top: 1px solid var(--border-color);
+            transition: border-color 0.4s ease;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-brand h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.5px;
+        }
+
+        .footer-brand .accent {
+            color: var(--accent-color);
+        }
+
+        .footer-brand p {
+            color: var(--text-muted);
+            max-width: 360px;
+            transition: color 0.4s ease;
+        }
+
+        .footer-col h4 {
+            font-size: 0.9rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 1.1rem;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col li {
+            margin-bottom: 0.6rem;
+        }
+
+        .footer-col a {
+            color: var(--text-muted);
+            transition: color 0.3s ease;
+        }
+
+        .footer-col a:hover {
+            color: var(--text-color);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid var(--border-color);
+            padding-top: 1.5rem;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            transition: border-color 0.4s ease, color 0.4s ease;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 992px) {
+            .hero { padding: 12rem 2rem 8rem; }
+            .hero h1 { font-size: 3.5rem; }
+            .hero-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+            .hero-content { text-align: center; margin: 0 auto; }
+            .hero-quote { justify-self: center; margin: 0 auto; }
+            .features-grid { grid-template-columns: 1fr; gap: 2rem; }
+            .about-grid { grid-template-columns: 1fr; }
+            .item-wide, .item-small { grid-column: span 12; }
+            .event-card { grid-template-columns: 1fr; gap: 1.5rem; }
+            .event-btn { justify-self: start; }
+            .locations-grid { grid-template-columns: 1fr; height: auto; }
+            #map { height: 400px; }
+            .locations-list { height: 400px; }
+            .social-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hero h1 { font-size: 2.8rem; }
+            .section-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+            h2 { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <div class="logo">ПРО<span class="accent">СВЕТ</span></div>
+            <div class="nav-links">
+                <a href="#about">О нас</a>
+                <a href="#gallery">Галерея</a>
+                <a href="#events">События</a>
+                <a href="#locations">Локации</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Плавающая кнопка смены темы -->
+    <button id="themeToggleFab" class="theme-toggle-fab" title="Сменить тему">
+        <svg id="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+    </button>
+
+    <main>
+        <!-- ПАНОРАМНЫЙ HERO -->
+        <section class="hero">
+            <div class="hero-grid">
+                <div class="hero-content">
+                    <h1>Церковь ПРОСВЕТ</h1>
+                    <p>помочь людям найти дорогу к Богу</p>
+                    <a href="#about" class="btn-primary">Узнать больше</a>
+                </div>
+                <div class="hero-quote">
+                    <blockquote>«Я есмь свет миру; кто последует за Мною, тот не будет ходить во тьме, но будет иметь свет жизни».</blockquote>
+                    <a href="https://bibleonline.ru/bible/nrt/joh/8/12/" target="_blank" rel="noopener">Иоанна 8:12</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="features-inner">
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <h3>Познание Бога</h3>
+                        <p>Для нас это живая встреча с Творцом через Слово и молитву. Мы стремимся знать Его лично, а не просто знать о Нём. Каждое воскресение и в течение недели мы открываем сердце, чтобы слышать Его голос.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h3>Общение</h3>
+                        <p>Мы — семья, где каждый важен. Вместе молимся, поддерживаем и делим жизнь, чтобы никто не оставался один. В нашей церкви вы найдёте друзей, с которыми пройдёте через любые обстоятельства.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h3>Ученичество</h3>
+                        <p>Мы растем и ведём других. Наша цель — воспитать зрелых учеников, которые передадут веру следующему поколению. Мы наставляем личным примером и помогаем каждому найти своё место в служении.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about">
+            <h2>О нас</h2>
+            <p class="about-intro">Мы ПроСВЕТ — современная евангельская церковь, призванная нести Свет нашему обществу</p>
+            <div class="about-grid">
+                <div class="about-text">
+                    <h3>Наше видение</h3>
+                    <p>Мы видим современное общество, преображённое светом Христа, в котором люди обретают смысл, раскрывают свои дары и становятся проводниками Божьей славы в каждой сфере — в семье, работе, творчестве и служении.</p>
+                </div>
+                <div class="about-text">
+                    <h3>Наша миссия</h3>
+                    <p>Приводить людей ко Христу, помогать им вырастать духовно и быть оснащёнными для служения и своего призвания, чтобы во всём прославлять Бога</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="gallery">
+            <div class="section-header">
+                <h2>Атмосфера</h2>
+                <a href="#" style="text-decoration: underline;">Смотреть все фото</a>
+            </div>
+            <div class="gallery-grid">
+                <img src="64.jpg" alt="Встреча" class="gallery-item item-wide">
+                <video class="gallery-item item-small" controls muted poster="49.jpg">
+                    <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                </video>
+                <img src="2.jpg" alt="Лекция" class="gallery-item item-small">
+                <img src="67.jpg" alt="Нетворкинг" class="gallery-item item-wide">
+            </div>
+        </section>
+
+        <section id="events">
+            <div class="section-header">
+                <h2>Расписание</h2>
+            </div>
+            <div class="events-list">
+                <div class="event-card">
+                    <div class="event-date">01 сентября</div>
+                    <div class="event-info">
+                        <h3>Вечер молитвы и хвалы в СПбХУ</h3>
+                        <p>19:00 • Адрес: Нарвский проспект, 13Б</p>
+                    </div>
+                    <a href="#" class="event-btn">Записаться</a>
+                </div>
+                <div class="event-card">
+                    <div class="event-date">08 сентября</div>
+                    <div class="event-info">
+                        <h3>Молитвенный марафон нашей церкви</h3>
+                    </div>
+                    <a href="#" class="event-btn">Записаться</a>
+                </div>
+                <div class="event-card">
+                    <div class="event-date">27 сентября</div>
+                    <div class="event-info">
+                        <h3>Праздничное богослужение — День благодарности</h3>
+                        <p>11:00 • Главный зал</p>
+                    </div>
+                    <a href="#" class="event-btn">Записаться</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="locations">
+            <div class="section-header">
+                <h2>Наши локации</h2>
+                <p>Выберите точку на карте или в списке</p>
+            </div>
+            
+            <div class="locations-grid">
+                <div class="map-container">
+                    <div id="map"></div>
+                </div>
+                <div class="locations-list" id="locationsList"></div>
+            </div>
+        </section>
+
+        <section id="social">
+            <div class="section-header">
+                <h2>Мы в соцсетях</h2>
+                <p>Следите за нашими новостями</p>
+            </div>
+            <div class="social-grid">
+                <a href="#" class="social-card">
+                    <h3>Telegram</h3>
+                    <p>Анонсы и полезные статьи</p>
+                </a>
+                <a href="#" class="social-card">
+                    <h3>ВКонтакте</h3>
+                    <p>Фотоотчеты и обсуждения</p>
+                </a>
+                <a href="#" class="social-card">
+                    <h3>YouTube</h3>
+                    <p>Записи лекций и подкасты</p>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <h3>Церковь ПРО<span class="accent">СВЕТ</span></h3>
+                <p>Современная евангельская церковь, призванная нести Свет нашему обществу и помогать людям найти дорогу к Богу.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Контакты</h4>
+                <ul>
+                    <li><a href="mailto:info@prosvet.ru">info@prosvet.ru</a></li>
+                    <li><a href="tel:+79990000000">+7 (999) 000-00-00</a></li>
+                    <li><a href="#">Телеграм-канал</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Документация</h4>
+                <ul>
+                    <li><a href="#">Устав церкви</a></li>
+                    <li><a href="#">Политика конфиденциальности</a></li>
+                    <li><a href="#">Пользовательское соглашение</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Церковь ПроСВЕТ. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <!-- Скрипт Яндекс Карт -->
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey=YOUR_API_KEY" type="text/javascript"></script>
+    <script>
+        // 1. ПЕРЕКЛЮЧАТЕЛЬ ТЕМ
+        const themeToggleFab = document.getElementById('themeToggleFab');
+        let isDarkTheme = true;
+        
+        const iconSun = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>`;
+        const iconMoon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>`;
+
+        // 2. ИНИЦИАЛИЗАЦИЯ КАРТЫ (Яндекс Карты)
+        let map = null;
+        // Центр — Санкт-Петербург
+        const mapCenter = [59.9343, 30.3351];
+
+        // Применяем тему к карте (тёмная / светлая)
+        function applyMapTheme() {
+            if (!map) return;
+            try {
+                map.options.set('themeType', isDarkTheme ? 'dark' : 'light');
+            } catch (e) {
+                // переключение темы карты поддерживается не во всех версиях API
+            }
+        }
+
+        // Создание карты
+        function initMap() {
+            map = new ymaps.Map('map', {
+                center: mapCenter,
+                zoom: 12,
+                controls: ['zoomControl', 'fullscreenControl']
+            });
+            map.options.set('suppressMapOpenBlock', true);
+            applyMapTheme();
+            renderLocations();
+        }
+
+        // Обработка кнопки смены темы
+        themeToggleFab.addEventListener('click', () => {
+            isDarkTheme = !isDarkTheme;
+            
+            if(isDarkTheme) {
+                document.documentElement.removeAttribute('data-theme');
+                themeToggleFab.innerHTML = iconSun;
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light');
+                themeToggleFab.innerHTML = iconMoon;
+            }
+            applyMapTheme();
+        });
+
+        // 3. ДАННЫЕ ЛОКАЦИЙ (Санкт-Петербург)
+        const locationsData = [
+            { id: 1, coords: [59.9361, 30.3197], title: "Главный зал", desc: "Здесь проходят богослужения каждое воскресенье", address: "Санкт-Петербург, Малая Конюшенная, 1–3" },
+            { id: 2, coords: [60.0504, 30.3324], title: "Домашняя группа — Пр-т Просвещения", desc: "Даниил Мамцев @Danylko_m", address: "ст. м. Проспект Просвещения" },
+            { id: 3, coords: [59.9259, 30.3159], title: "Домашняя группа — Садовая", desc: "Антон Косолапов @kosolap0ff", address: "ст. м. Садовая" },
+            { id: 4, coords: [59.9155, 30.3188], title: "Домашняя группа — Технологический ин-т", desc: "Александр Коваленко @Legendarysasha", address: "ст. м. Технологический институт" },
+            { id: 5, coords: [60.0128, 30.3959], title: "Домашняя группа — Академическая", desc: "Виктор Скланда @Viktor_Sklanda", address: "ст. м. Академическая" },
+            { id: 6, coords: [59.9328, 30.6525], title: "Домашняя группа — Колтуши", desc: "Мурад Алимов @MuradAlimov525", address: "Колтуши" }
+        ];
+
+        const listContainer = document.getElementById('locationsList');
+        const markers = {};
+
+        // Отображение меток и списка локаций
+        function renderLocations() {
+            locationsData.forEach(loc => {
+                const placemark = new ymaps.Placemark(loc.coords, {
+                    balloonContent: `<div style="font-family:sans-serif; color:#111;"><b>${loc.title}</b><br>${loc.address}</div>`,
+                    hintContent: loc.title
+                }, {
+                    preset: 'islands#accentDotIcon'
+                });
+                map.geoObjects.add(placemark);
+                markers[loc.id] = placemark;
+
+                placemark.events.add('click', () => activateLocation(loc.id));
+
+                const listItem = document.createElement('div');
+                listItem.className = 'location-item';
+                listItem.dataset.id = loc.id;
+                listItem.innerHTML = `
+                    <h3>${loc.title}</h3>
+                    <p>${loc.desc}</p>
+                    <span class="location-address">${loc.address}</span>
+                `;
+                listContainer.appendChild(listItem);
+
+                listItem.addEventListener('click', () => {
+                    activateLocation(loc.id);
+                    markers[loc.id].balloon.open();
+                    map.setCenter(loc.coords, 14, { duration: 1500 });
+                });
+            });
+        }
+
+        function activateLocation(id) {
+            document.querySelectorAll('.location-item').forEach(el => el.classList.remove('active'));
+            const activeItem = document.querySelector(`.location-item[data-id="${id}"]`);
+            if (activeItem) {
+                activeItem.classList.add('active');
+                activeItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+
+        // Запуск Яндекс Карт после загрузки API
+        ymaps.ready(initMap);
+    </script>
+</body>
+</html>
