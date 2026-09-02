@@ -69,6 +69,15 @@
             margin: 0 auto;
         }
 
+        /* Чередование фона блоков: полоса на всю ширину экрана.
+           Секции с классом .alt — на тёмно-сером (светло-сером) фоне, остальные — на основном */
+        main > section.alt {
+            background-color: var(--light-gray);
+            box-shadow: 0 0 0 100vmax var(--light-gray);
+            clip-path: inset(0 -100vmax 0 -100vmax);
+            transition: background-color 0.4s ease;
+        }
+
         h1, h2, h3, h4 {
             font-weight: 600;
             line-height: 1.2;
@@ -337,6 +346,30 @@
             transition: color 0.4s ease;
         }
 
+        /* Наши цели (отдельная секция) */
+        .goals h2 {
+            font-size: 3rem;
+            margin-bottom: 4rem;
+            letter-spacing: -1px;
+        }
+
+        .goals-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3rem;
+        }
+
+        .goals-grid .goal-item h4 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .goals-grid .goal-item p {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            transition: color 0.4s ease;
+        }
+
         /* Галерея */
         .gallery-grid {
             display: grid;
@@ -515,6 +548,16 @@
         .social-card h3 {
             font-size: 1.8rem;
             margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+        }
+
+        .social-logo-inline {
+            height: 26px;
+            width: auto;
+            flex-shrink: 0;
         }
 
         .social-card p {
@@ -647,6 +690,7 @@
             .hero-quote { justify-self: center; margin: 0 auto; }
             .features-grid { grid-template-columns: 1fr; gap: 2rem; }
             .about-grid { grid-template-columns: 1fr; }
+            .goals-grid { grid-template-columns: 1fr; gap: 2rem; }
             .item-wide, .item-small { grid-column: span 12; }
             .event-card { grid-template-columns: 1fr; gap: 1.5rem; }
             .event-btn { justify-self: start; }
@@ -710,25 +754,6 @@
             </div>
         </section>
 
-        <section class="features">
-            <div class="features-inner">
-                <div class="features-grid">
-                    <div class="feature-item">
-                        <h3>Познание Бога</h3>
-                        <p>Для нас это живая встреча с Творцом через Слово и молитву. Мы стремимся знать Его лично, а не просто знать о Нём. Каждое воскресение и в течение недели мы открываем сердце, чтобы слышать Его голос.</p>
-                    </div>
-                    <div class="feature-item">
-                        <h3>Общение</h3>
-                        <p>Мы — семья, где каждый важен. Вместе молимся, поддерживаем и делим жизнь, чтобы никто не оставался один. В нашей церкви вы найдёте друзей, с которыми пройдёте через любые обстоятельства.</p>
-                    </div>
-                    <div class="feature-item">
-                        <h3>Ученичество</h3>
-                        <p>Мы растем и ведём других. Наша цель — воспитать зрелых учеников, которые передадут веру следующему поколению. Мы наставляем личным примером и помогаем каждому найти своё место в служении.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
         <section id="about">
             <h2>О нас</h2>
             <p class="about-intro">Мы ПроСВЕТ — современная евангельская церковь, призванная нести Свет нашему обществу</p>
@@ -740,6 +765,24 @@
                 <div class="about-text">
                     <h3>Наша миссия</h3>
                     <p>Приводить людей ко Христу, помогать им вырастать духовно и быть оснащёнными для служения и своего призвания, чтобы во всём прославлять Бога</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="goals alt">
+            <h2>Наши цели</h2>
+            <div class="goals-grid">
+                <div class="goal-item">
+                    <h4>Познание Бога</h4>
+                    <p>Для нас это живая встреча с Творцом через Слово и молитву. Мы стремимся знать Его лично, а не просто знать о Нём. Каждое воскресение и в течение недели мы открываем сердце, чтобы слышать Его голос.</p>
+                </div>
+                <div class="goal-item">
+                    <h4>Общение</h4>
+                    <p>Мы — семья, где каждый важен. Вместе молимся, поддерживаем и делим жизнь, чтобы никто не оставался один. В нашей церкви вы найдёте друзей, с которыми пройдёте через любые обстоятельства.</p>
+                </div>
+                <div class="goal-item">
+                    <h4>Ученичество</h4>
+                    <p>Мы растем и ведём других. Наша цель — воспитать зрелых учеников, которые передадут веру следующему поколению. Мы наставляем личным примером и помогаем каждому найти своё место в служении.</p>
                 </div>
             </div>
         </section>
@@ -759,7 +802,7 @@
             </div>
         </section>
 
-        <section id="events">
+        <section id="events" class="alt">
             <div class="section-header">
                 <h2>Расписание</h2>
             </div>
@@ -811,15 +854,15 @@
             </div>
             <div class="social-grid">
                 <a href="#" class="social-card">
-                    <h3>Telegram</h3>
+                    <h3><img src="telegram-logo.png" class="social-logo-inline" alt="Telegram">Telegram</h3>
                     <p>Анонсы и полезные статьи</p>
                 </a>
                 <a href="#" class="social-card">
-                    <h3>ВКонтакте</h3>
+                    <h3><img src="vk-logo.png" class="social-logo-inline" alt="VK">ВКонтакте</h3>
                     <p>Фотоотчеты и обсуждения</p>
                 </a>
                 <a href="#" class="social-card">
-                    <h3>YouTube</h3>
+                    <h3><img src="youtube-logo.png" class="social-logo-inline" alt="YouTube">YouTube</h3>
                     <p>Записи лекций и подкасты</p>
                 </a>
             </div>
