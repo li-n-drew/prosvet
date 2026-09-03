@@ -517,6 +517,22 @@
             transition: color 0.4s ease;
         }
 
+        .tg-link {
+            display: inline-flex;
+            vertical-align: -3px;
+            margin-right: 0.45rem;
+        }
+
+        .tg-link svg {
+            width: 17px;
+            height: 17px;
+            transition: opacity 0.3s ease;
+        }
+
+        .tg-link:hover svg {
+            opacity: 0.75;
+        }
+
         .location-address {
             font-size: 0.85rem;
             color: var(--text-color);
@@ -963,11 +979,11 @@
         // 3. ДАННЫЕ ЛОКАЦИЙ (Санкт-Петербург)
         const locationsData = [
             { id: 1, coords: [59.9361, 30.3197], title: "Главный зал", desc: "Здесь проходят богослужения каждое воскресенье", address: "Санкт-Петербург, Малая Конюшенная, 1–3" },
-            { id: 2, coords: [60.0504, 30.3324], title: "Домашняя группа — Пр-т Просвещения", desc: "Даниил Мамцев @Danylko_m", address: "ст. м. Проспект Просвещения" },
-            { id: 3, coords: [59.9259, 30.3159], title: "Домашняя группа — Садовая", desc: "Антон Косолапов @kosolap0ff", address: "ст. м. Садовая" },
-            { id: 4, coords: [59.9155, 30.3188], title: "Домашняя группа — Технологический ин-т", desc: "Александр Коваленко @Legendarysasha", address: "ст. м. Технологический институт" },
-            { id: 5, coords: [60.0128, 30.3959], title: "Домашняя группа — Академическая", desc: "Виктор Скланда @Viktor_Sklanda", address: "ст. м. Академическая" },
-            { id: 6, coords: [59.9328, 30.6525], title: "Домашняя группа — Колтуши", desc: "Мурад Алимов @MuradAlimov525", address: "Колтуши" }
+            { id: 2, coords: [60.0504, 30.3324], title: "Домашняя группа — Пр-т Просвещения", leader: "Даниил Мамцев", tg: "Danylko_m", address: "ст. м. Проспект Просвещения" },
+            { id: 3, coords: [59.9259, 30.3159], title: "Домашняя группа — Садовая", leader: "Антон Косолапов", tg: "kosolap0ff", address: "ст. м. Садовая" },
+            { id: 4, coords: [59.9155, 30.3188], title: "Домашняя группа — Технологический ин-т", leader: "Александр Коваленко", tg: "Legendarysasha", address: "ст. м. Технологический институт" },
+            { id: 5, coords: [60.0128, 30.3959], title: "Домашняя группа — Академическая", leader: "Виктор Скланда", tg: "Viktor_Sklanda", address: "ст. м. Академическая" },
+            { id: 6, coords: [59.9328, 30.6525], title: "Домашняя группа — Колтуши", leader: "Мурад Алимов", tg: "MuradAlimov525", address: "Колтуши" }
         ];
 
         const listContainer = document.getElementById('locationsList');
@@ -990,9 +1006,15 @@
                 const listItem = document.createElement('div');
                 listItem.className = 'location-item';
                 listItem.dataset.id = loc.id;
+                const tgIcon = loc.tg
+                    ? `<a class="tg-link" href="https://t.me/${loc.tg}" target="_blank" rel="noopener" title="Написать в Telegram" aria-label="Telegram: ${loc.leader}"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#229ED9" d="M9.04 15.51l-.37 5.54c.54 0 .77-.23 1.06-.53l2.55-2.46 5.28 3.88c.97.53 1.66.25 1.92-.9l3.48-16.34c.32-1.43-.51-2-1.44-1.65L1.05 10.07c-1.4.54-1.38 1.32-.23 1.67l5.12 1.6 11.9-7.5c.56-.37 1.07-.17.65.22L9.04 15.51z"/></svg></a>`
+                    : '';
+                const contactLine = loc.leader
+                    ? `<p>${tgIcon}${loc.leader}</p>`
+                    : `<p>${loc.desc}</p>`;
                 listItem.innerHTML = `
                     <h3>${loc.title}</h3>
-                    <p>${loc.desc}</p>
+                    ${contactLine}
                     <span class="location-address">${loc.address}</span>
                 `;
                 listContainer.appendChild(listItem);
@@ -1002,6 +1024,12 @@
                     markers[loc.id].balloon.open();
                     map.setCenter(loc.coords, 14, { duration: 1500 });
                 });
+
+                // Клик по иконке Telegram не должен активировать карточку/карту
+                const tgAnchor = listItem.querySelector('.tg-link');
+                if (tgAnchor) {
+                    tgAnchor.addEventListener('click', e => e.stopPropagation());
+                }
             });
         }
 
