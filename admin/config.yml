@@ -11,7 +11,7 @@ collections:
     files:
       - name: "settings"
         label: "Общие настройки"
-        file: "_data/settings.json"
+        file: "data/settings.json"
         fields:
           - { label: "Логотип (светлый)", name: "logo_light", widget: "image" }
           - { label: "Логотип (темный)", name: "logo_dark", widget: "image" }
@@ -21,7 +21,7 @@ collections:
 
       - name: "events"
         label: "Расписание (События)"
-        file: "_data/events.json"
+        file: "data/events.json"
         fields:
           - name: "items"
             label: "Список событий"
@@ -34,7 +34,7 @@ collections:
 
       - name: "locations"
         label: "Локации и группы"
-        file: "_data/locations.json"
+        file: "data/locations.json"
         fields:
           - name: "items"
             label: "Список локаций"
@@ -51,7 +51,7 @@ collections:
 
       - name: "gallery"
         label: "Галерея"
-        file: "_data/gallery.json"
+        file: "data/gallery.json"
         fields:
           - name: "items"
             label: "Фото и видео"

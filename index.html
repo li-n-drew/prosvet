@@ -942,22 +942,22 @@
         async function loadData() {
             try {
                 // Загрузка настроек (логотипы и соцсети)
-                const settingsRes = await fetch('_data/settings.json');
+                const settingsRes = await fetch('data/settings.json');
                 const settings = await settingsRes.json();
                 applySettings(settings);
 
                 // Загрузка галереи
-                const galleryRes = await fetch('_data/gallery.json');
+                const galleryRes = await fetch('data/gallery.json');
                 const gallery = await galleryRes.json();
                 renderGallery(gallery.items || []);
 
                 // Загрузка событий
-                const eventsRes = await fetch('_data/events.json');
+                const eventsRes = await fetch('data/events.json');
                 const events = await eventsRes.json();
                 renderEvents(events.items || []);
 
                 // Загрузка локаций
-                const locationsRes = await fetch('_data/locations.json');
+                const locationsRes = await fetch('data/locations.json');
                 const locations = await locationsRes.json();
 
                 // Инициализация карты после загрузки данных локаций
