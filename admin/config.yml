@@ -43,7 +43,7 @@ collections:
             fields:
               - { label: "ID (уникальный номер)", name: "id", widget: "number" }
               - { label: "Заголовок", name: "title", widget: "string" }
-              - { label: "Координаты (широта, долгота)", name: "coords", widget: "list", field: { widget: "number", value_type: "float" } }
+              - { label: "Координаты (широта, долгота)", name: "coords", widget: "list", field: { label: "Координата", name: "coord", widget: "number", value_type: "float" } }
               - { label: "Лидер (если есть)", name: "leader", widget: "string", required: false }
               - { label: "Telegram лидера (без @)", name: "tg", widget: "string", required: false }
               - { label: "Описание (если нет лидера)", name: "desc", widget: "string", required: false }
