@@ -5,21 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Content Manager | ПРОСВЕТ</title>
 
-    <!-- Идентификатор сайта в Netlify для привязки Identity -->
-    <meta name="netlify-site-id" content="1467721f-3cde-4330-bbff-bce406624d2b" />
+    <!-- Идентификатор сайта в Netlify для нового проекта sparkly-caramel-d1fc08 -->
+    <meta name="netlify-site-id" content="64a07cf3-7cb8-41c1-baff-b8542092e77b" />
 
     <!-- Виджет авторизации Netlify -->
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 
     <script>
       if (window.netlifyIdentity) {
-        // Принудительно связываем виджет с вашим сервером Netlify
-        window.netlifyIdentity.setURL("https://stunning-dango-c3132b.netlify.app/");
+        // Связываем виджет с новым сервером Netlify
+        window.netlifyIdentity.setURL("https://sparkly-caramel-d1fc08.netlify.app/");
       }
     </script>
   </head>
   <body>
-    <!-- Decap CMS загружается после настройки Identity -->
+    <!-- Decap CMS -->
     <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
 
     <script>
@@ -32,6 +32,14 @@
           }
         });
       }
+
+      // Автоматическое открытие окна логина
+      document.addEventListener('DOMContentLoaded', () => {
+        const user = netlifyIdentity.currentUser();
+        if (!user) {
+          netlifyIdentity.open();
+        }
+      });
     </script>
   </body>
 </html>
