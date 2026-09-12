@@ -4,17 +4,26 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Content Manager | ПРОСВЕТ</title>
+
+    <!-- Идентификатор сайта в Netlify для привязки Identity -->
+    <meta name="netlify-site-id" content="1467721f-3cde-4330-bbff-bce406624d2b" />
+
     <!-- Виджет авторизации Netlify -->
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-  </head>
-  <body>
-    <!-- Точка входа в Decap CMS -->
-    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+
     <script>
       if (window.netlifyIdentity) {
-        // Явно указываем адрес сервера Netlify для работы на домене GitHub
+        // Принудительно связываем виджет с вашим сервером Netlify
         window.netlifyIdentity.setURL("https://stunning-dango-c3132b.netlify.app/");
+      }
+    </script>
+  </head>
+  <body>
+    <!-- Decap CMS загружается после настройки Identity -->
+    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
 
+    <script>
+      if (window.netlifyIdentity) {
         window.netlifyIdentity.on("init", user => {
           if (!user) {
             window.netlifyIdentity.on("login", () => {
@@ -23,14 +32,6 @@
           }
         });
       }
-
-      // Принудительно открываем окно логина при загрузке, если пользователь не авторизован
-      document.addEventListener('DOMContentLoaded', () => {
-        const user = netlifyIdentity.currentUser();
-        if (!user) {
-          netlifyIdentity.open();
-        }
-      });
     </script>
   </body>
 </html>
