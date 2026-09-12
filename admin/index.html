@@ -5,21 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Content Manager | ПРОСВЕТ</title>
 
-    <!-- Идентификатор сайта в Netlify для нового проекта sparkly-caramel-d1fc08 -->
     <meta name="netlify-site-id" content="64a07cf3-7cb8-41c1-baff-b8542092e77b" />
-
-    <!-- Виджет авторизации Netlify -->
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-
-    <script>
-      if (window.netlifyIdentity) {
-        // Связываем виджет с новым сервером Netlify
-        window.netlifyIdentity.setURL("https://sparkly-caramel-d1fc08.netlify.app/");
-      }
-    </script>
   </head>
   <body>
-    <!-- Decap CMS -->
+    <script>
+      // Принудительно устанавливаем URL для Identity до загрузки CMS
+      if (window.netlifyIdentity) {
+        window.netlifyIdentity.setURL("https://sparkly-caramel-d1fc08.netlify.app/");
+      }
+      // Хак для CMS: записываем адрес сайта в localStorage
+      localStorage.setItem("netlifySiteURL", "https://sparkly-caramel-d1fc08.netlify.app/");
+    </script>
+
     <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
 
     <script>
@@ -32,14 +30,6 @@
           }
         });
       }
-
-      // Автоматическое открытие окна логина
-      document.addEventListener('DOMContentLoaded', () => {
-        const user = netlifyIdentity.currentUser();
-        if (!user) {
-          netlifyIdentity.open();
-        }
-      });
     </script>
   </body>
 </html>
