@@ -532,18 +532,20 @@
 
         .tg-link {
             display: inline-flex;
-            vertical-align: -3px;
-            margin-right: 0.45rem;
-        }
-
-        .tg-link svg {
-            width: 17px;
-            height: 17px;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            color: inherit;
             transition: opacity 0.3s ease;
         }
 
-        .tg-link:hover svg {
-            opacity: 0.75;
+        .tg-link svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .tg-link:hover {
+            opacity: 0.7;
         }
 
         .location-address {
@@ -897,15 +899,15 @@
                 <p>Следите за нашими новостями</p>
             </div>
             <div class="social-grid">
-                <a href="#" class="social-card">
+                <a href="https://t.me/prosvet_church" target="_blank" rel="noopener" class="social-card">
                     <h3><img src="telegram-logo.png" class="social-logo-inline" alt="Telegram">Telegram</h3>
                     <p>Анонсы и полезные статьи</p>
                 </a>
-                <a href="#" class="social-card">
+                <a href="https://vk.ru/prosvet_church" target="_blank" rel="noopener" class="social-card">
                     <h3><img src="vk-logo.png" class="social-logo-inline" alt="VK">ВКонтакте</h3>
                     <p>Фотоотчеты и обсуждения</p>
                 </a>
-                <a href="#" class="social-card">
+                <a href="https://youtube.com/@prosvet_church" target="_blank" rel="noopener" class="social-card">
                     <h3><img src="youtube-logo.png" class="social-logo-inline" alt="YouTube">YouTube</h3>
                     <p>Записи лекций и подкасты</p>
                 </a>
@@ -1022,11 +1024,11 @@
                 const listItem = document.createElement('div');
                 listItem.className = 'location-item';
                 listItem.dataset.id = loc.id;
-                const tgIcon = loc.tg
-                    ? `<a class="tg-link" href="https://t.me/${loc.tg}" target="_blank" rel="noopener" title="Написать в Telegram" aria-label="Telegram: ${loc.leader}"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#229ED9" d="M9.04 15.51l-.37 5.54c.54 0 .77-.23 1.06-.53l2.55-2.46 5.28 3.88c.97.53 1.66.25 1.92-.9l3.48-16.34c.32-1.43-.51-2-1.44-1.65L1.05 10.07c-1.4.54-1.38 1.32-.23 1.67l5.12 1.6 11.9-7.5c.56-.37 1.07-.17.65.22L9.04 15.51z"/></svg></a>`
+                const tgLink = loc.tg
+                    ? `<a class="tg-link" href="https://t.me/${loc.tg}" target="_blank" rel="noopener" title="Написать в Telegram" aria-label="Telegram: ${loc.leader}"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#229ED9" d="M9.04 15.51l-.37 5.54c.54 0 .77-.23 1.06-.53l2.55-2.46 5.28 3.88c.97.53 1.66.25 1.92-.9l3.48-16.34c.32-1.43-.51-2-1.44-1.65L1.05 10.07c-1.4.54-1.38 1.32-.23 1.67l5.12 1.6 11.9-7.5c.56-.37 1.07-.17.65.22L9.04 15.51z"/></svg>${loc.leader}</a>`
                     : '';
                 const contactLine = loc.leader
-                    ? `<p>${tgIcon}${loc.leader}</p>`
+                    ? `<p>${tgLink}</p>`
                     : `<p>${loc.desc}</p>`;
                 listItem.innerHTML = `
                     <h3>${loc.title}</h3>
