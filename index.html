@@ -1014,7 +1014,7 @@
         // Отображение меток и списка локаций
         function renderLocations(data) {
             data.forEach(loc => {
-                const placemark = new ymaps.Placemark(loc.coords, {
+                const placemark = new ymaps.Placemark([loc.lat, loc.lng], {
                     balloonContent: `<div style="font-family:sans-serif; color:#111;"><b>${loc.title}</b><br>${loc.address}</div>`,
                     hintContent: loc.title
                 }, {
@@ -1044,7 +1044,7 @@
                 listItem.addEventListener('click', () => {
                     activateLocation(loc.id);
                     markers[loc.id].balloon.open();
-                    map.setCenter(loc.coords, 14, { duration: 1500 });
+                    map.setCenter([loc.lat, loc.lng], 14, { duration: 1500 });
                 });
 
                 // Клик по иконке Telegram не должен активировать карточку/карту
