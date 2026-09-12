@@ -13,6 +13,9 @@
     <script>
       // Инициализация виджета Netlify Identity
       if (window.netlifyIdentity) {
+        // Указываем адрес сервера авторизации Netlify для работы на стороннем домене
+        window.netlifyIdentity.setURL("https://stunning-dango-c3132b.netlify.app/");
+
         window.netlifyIdentity.on("init", user => {
           if (!user) {
             window.netlifyIdentity.on("login", () => {
