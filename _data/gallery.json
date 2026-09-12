@@ -1,0 +1,29 @@
+{
+  "items": [
+    {
+      "type": "image",
+      "src": "64.jpg",
+      "alt": "Встреча",
+      "class": "item-wide"
+    },
+    {
+      "type": "video",
+      "src": "https://www.w3schools.com/html/mov_bbb.mp4",
+      "poster": "49.jpg",
+      "alt": "Видео",
+      "class": "item-small"
+    },
+    {
+      "type": "image",
+      "src": "2.jpg",
+      "alt": "Лекция",
+      "class": "item-small"
+    },
+    {
+      "type": "image",
+      "src": "67.jpg",
+      "alt": "Нетворкинг",
+      "class": "item-wide"
+    }
+  ]
+}

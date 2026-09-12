@@ -838,13 +838,8 @@
                 <h2>Атмосфера</h2>
                 <a href="#" style="text-decoration: underline;">Смотреть все фото</a>
             </div>
-            <div class="gallery-grid">
-                <img src="64.jpg" alt="Встреча" class="gallery-item item-wide">
-                <video class="gallery-item item-small" controls muted poster="49.jpg">
-                    <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
-                </video>
-                <img src="2.jpg" alt="Лекция" class="gallery-item item-small">
-                <img src="67.jpg" alt="Нетворкинг" class="gallery-item item-wide">
+            <div class="gallery-grid" id="galleryGrid">
+                <!-- Заполняется из _data/gallery.json -->
             </div>
         </section>
 
@@ -852,30 +847,8 @@
             <div class="section-header">
                 <h2>Расписание</h2>
             </div>
-            <div class="events-list">
-                <div class="event-card">
-                    <div class="event-date">01 сентября</div>
-                    <div class="event-info">
-                        <h3>Вечер молитвы и хвалы в СПбХУ</h3>
-                        <p>19:00 • Адрес: Нарвский проспект, 13Б</p>
-                    </div>
-                    <a href="#" class="event-btn">Записаться</a>
-                </div>
-                <div class="event-card">
-                    <div class="event-date">08 сентября</div>
-                    <div class="event-info">
-                        <h3>Молитвенный марафон нашей церкви</h3>
-                    </div>
-                    <a href="#" class="event-btn">Записаться</a>
-                </div>
-                <div class="event-card">
-                    <div class="event-date">27 сентября</div>
-                    <div class="event-info">
-                        <h3>Праздничное богослужение — День благодарности</h3>
-                        <p>11:00 • Главный зал</p>
-                    </div>
-                    <a href="#" class="event-btn">Записаться</a>
-                </div>
+            <div class="events-list" id="eventsList">
+                <!-- Заполняется из _data/events.json -->
             </div>
         </section>
 
@@ -953,37 +926,8 @@
         const iconSun = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>`;
         const iconMoon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>`;
 
-        // 2. ИНИЦИАЛИЗАЦИЯ КАРТЫ (Яндекс Карты)
-        let map = null;
-        // Центр — Санкт-Петербург
-        const mapCenter = [59.9343, 30.3351];
-
-        // Применяем тему к карте (тёмная / светлая)
-        function applyMapTheme() {
-            if (!map) return;
-            try {
-                map.options.set('themeType', isDarkTheme ? 'dark' : 'light');
-            } catch (e) {
-                // переключение темы карты поддерживается не во всех версиях API
-            }
-        }
-
-        // Создание карты
-        function initMap() {
-            map = new ymaps.Map('map', {
-                center: mapCenter,
-                zoom: 12,
-                controls: ['zoomControl', 'fullscreenControl']
-            });
-            map.options.set('suppressMapOpenBlock', true);
-            applyMapTheme();
-            renderLocations();
-        }
-
-        // Обработка кнопки смены темы
         themeToggleFab.addEventListener('click', () => {
             isDarkTheme = !isDarkTheme;
-            
             if(isDarkTheme) {
                 document.documentElement.removeAttribute('data-theme');
                 themeToggleFab.innerHTML = iconSun;
@@ -994,22 +938,82 @@
             applyMapTheme();
         });
 
-        // 3. ДАННЫЕ ЛОКАЦИЙ (Санкт-Петербург)
-        const locationsData = [
-            { id: 1, coords: [59.9361, 30.3197], title: "Главный зал", desc: "Здесь проходят богослужения каждое воскресенье", address: "Санкт-Петербург, Малая Конюшенная, 1–3" },
-            { id: 2, coords: [60.0504, 30.3324], title: "Домашняя группа — Пр-т Просвещения", leader: "Даниил Мамцев", tg: "Danylko_m", address: "ст. м. Проспект Просвещения" },
-            { id: 3, coords: [59.9259, 30.3159], title: "Домашняя группа — Садовая", leader: "Антон Косолапов", tg: "kosolap0ff", address: "ст. м. Садовая" },
-            { id: 4, coords: [59.9155, 30.3188], title: "Домашняя группа — Технологический ин-т", leader: "Александр Коваленко", tg: "Legendarysasha", address: "ст. м. Технологический институт" },
-            { id: 5, coords: [60.0128, 30.3959], title: "Домашняя группа — Академическая", leader: "Виктор Скланда", tg: "Viktor_Sklanda", address: "ст. м. Академическая" },
-            { id: 6, coords: [59.9328, 30.6525], title: "Домашняя группа — Колтуши", leader: "Мурад Алимов", tg: "MuradAlimov525", address: "Колтуши" }
-        ];
+        // 2. ЗАГРУЗКА ДАННЫХ
+        async function loadData() {
+            try {
+                // Загрузка настроек (логотипы и соцсети)
+                const settingsRes = await fetch('_data/settings.json');
+                const settings = await settingsRes.json();
+                applySettings(settings);
+
+                // Загрузка галереи
+                const galleryRes = await fetch('_data/gallery.json');
+                const gallery = await galleryRes.json();
+                renderGallery(gallery.items || []);
+
+                // Загрузка событий
+                const eventsRes = await fetch('_data/events.json');
+                const events = await eventsRes.json();
+                renderEvents(events.items || []);
+
+                // Загрузка локаций
+                const locationsRes = await fetch('_data/locations.json');
+                const locations = await locationsRes.json();
+
+                // Инициализация карты после загрузки данных локаций
+                ymaps.ready(() => initMap(locations.items || []));
+            } catch (e) {
+                console.error("Ошибка загрузки данных:", e);
+            }
+        }
+
+        function applySettings(s) {
+            // Обновляем логотипы
+            document.querySelector('.logo-img.theme-dark').src = s.logo_light;
+            document.querySelector('.logo-img.theme-light').src = s.logo_dark;
+
+            // Обновляем ссылки в соцсетях
+            const socialLinks = document.querySelectorAll('.social-card');
+            if(socialLinks[0]) socialLinks[0].href = s.tg_url;
+            if(socialLinks[1]) socialLinks[1].href = s.vk_url;
+            if(socialLinks[2]) socialLinks[2].href = s.yt_url;
+        }
+
+        function renderGallery(data) {
+            const container = document.getElementById('galleryGrid');
+            if(!container) return;
+            container.innerHTML = data.map(item => {
+                if(item.type === 'video') {
+                    return `
+                        <video class="gallery-item ${item.class}" controls muted poster="${item.poster}">
+                            <source src="${item.src}" type="video/mp4">
+                        </video>`;
+                }
+                return `<img src="${item.src}" alt="${item.alt}" class="gallery-item ${item.class}">`;
+            }).join('');
+        }
+
+        function renderEvents(data) {
+            const container = document.getElementById('eventsList');
+            if(!container) return;
+            container.innerHTML = data.map(event => `
+                <div class="event-card">
+                    <div class="event-date">${event.date}</div>
+                    <div class="event-info">
+                        <h3>${event.title}</h3>
+                        ${event.description ? `<p>${event.description}</p>` : ''}
+                    </div>
+                    <a href="${event.link}" class="event-btn">Записаться</a>
+                </div>
+            `).join('');
+        }
 
         const listContainer = document.getElementById('locationsList');
         const markers = {};
 
         // Отображение меток и списка локаций
-        function renderLocations() {
-            locationsData.forEach(loc => {
+        function renderLocations(data) {
+            data.forEach(loc => {
                 const placemark = new ymaps.Placemark(loc.coords, {
                     balloonContent: `<div style="font-family:sans-serif; color:#111;"><b>${loc.title}</b><br>${loc.address}</div>`,
                     hintContent: loc.title
@@ -1029,7 +1033,7 @@
                     : '';
                 const contactLine = loc.leader
                     ? `<p>${tgLink}</p>`
-                    : `<p>${loc.desc}</p>`;
+                    : `<p>${loc.desc || ''}</p>`;
                 listItem.innerHTML = `
                     <h3>${loc.title}</h3>
                     ${contactLine}
@@ -1051,6 +1055,28 @@
             });
         }
 
+        // 4. ИНИЦИАЛИЗАЦИЯ КАРТЫ (Яндекс Карты)
+        let map = null;
+        const mapCenter = [59.9343, 30.3351];
+
+        function applyMapTheme() {
+            if (!map) return;
+            try {
+                map.options.set('themeType', isDarkTheme ? 'dark' : 'light');
+            } catch (e) {}
+        }
+
+        function initMap(data) {
+            map = new ymaps.Map('map', {
+                center: mapCenter,
+                zoom: 12,
+                controls: ['zoomControl', 'fullscreenControl']
+            });
+            map.options.set('suppressMapOpenBlock', true);
+            applyMapTheme();
+            renderLocations(data);
+        }
+
         function activateLocation(id) {
             document.querySelectorAll('.location-item').forEach(el => el.classList.remove('active'));
             const activeItem = document.querySelector(`.location-item[data-id="${id}"]`);
@@ -1060,8 +1086,7 @@
             }
         }
 
-        // Запуск Яндекс Карт после загрузки API
-        ymaps.ready(initMap);
+        loadData();
     </script>
 </body>
 </html>
