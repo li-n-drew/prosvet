@@ -205,18 +205,36 @@
 
         if(!dataCache[key]) {
             const token = localStorage.getItem('gh_token');
+            if (!token) {
+                showStatus('Ошибка: Отсутствует токен доступа. Войдите заново.', 'error');
+                return;
+            }
+
+            showLoading(true);
             try {
                 const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${SECTIONS[key].path}`, {
-                    headers: { 'Authorization': `token ${token}`, 'Cache-Control': 'no-cache' }
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Accept': 'application/vnd.github.v3+json',
+                        'Cache-Control': 'no-cache'
+                    }
                 });
+
+                if (res.status === 401) throw new Error('Неверный токен (401). Проверьте его в настройках.');
+                if (res.status === 404) throw new Error(`Файл не найден (404): ${SECTIONS[key].path}`);
+
                 const json = await res.json();
+                if (res.status !== 200) throw new Error(json.message || 'Ошибка API');
+
                 const content = JSON.parse(decodeURIComponent(escape(atob(json.content.replace(/\n/g, '')))));
                 dataCache[key] = { items: content.items || content, sha: json.sha, original: content };
             } catch(e) {
-                alert('Ошибка загрузки данных: ' + e.message);
+                console.error('GitHub API Error:', e);
+                showStatus('Ошибка загрузки: ' + e.message, 'error');
+            } finally {
+                showLoading(false);
             }
         }
-
         renderList();
     }
 
