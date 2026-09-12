@@ -1,6 +1,5 @@
 backend:
-  name: github
-  repo: li-n-drew/prosvet
+  name: git-gateway
   branch: main
 
 media_folder: "assets/uploads" # Папка, куда будут загружаться картинки
